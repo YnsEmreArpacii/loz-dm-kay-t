@@ -1,0 +1,38 @@
+const Discord = require('discord.js');
+const ayarlar = require('../ayarlar.json');
+const db = require("quick.db")
+
+exports.run = (client, message, args) => {
+let kod = db.fetch(`kod_${message.author.id}`);
+
+  if(args[0] !== kod) return message.reply("Hata! Kodunu Kontrol Et").then(msg => msg.delete(10000))
+  else {
+  message.delete()
+  var alrol = message.guild.roles.get('601167675909079052');   
+      
+  var silrol = message.guild.roles.get('610576562642747430');   
+      
+  message.member.removeRole(silrol);   
+      
+  message.member.addRole(alrol);  
+    
+   message.channel.send("Kayıt Oldun").then(msg => msg.delete(10000))
+   message.author.send("Başarıyla Kayıt Oldunuz.")
+   message.author.send("#HaxLarge #Ekibi")
+
+  db.delete(`kod_${message.author.id}`)
+  }
+}
+
+exports.conf = {
+  enabled: true,
+  guildOnly: false,
+  aliases: [],
+  permLevel: 0
+};
+
+exports.help = {
+  name: 'onay',
+  description: 'Tüm komutları gösterir.',
+  usage: 'onay [KOD]'
+};
